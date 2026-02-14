@@ -136,3 +136,63 @@ input{
   width:100vw; height:100vh;
   pointer-events:none;
 }
+
+/* --- Valentine Hearts Layer (login only) --- */
+#screen-login{
+  position: relative;
+  overflow: hidden; /* keeps hearts inside the card */
+}
+
+/* Hearts container sits above background but below text */
+.heartsLayer{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Make actual login content sit above hearts */
+#screen-login > :not(.heartsLayer){
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes floatHeart {
+  0%   { transform: translateY(12px) scale(var(--s)) rotate(0deg); opacity: 0; }
+  10%  { opacity: 0.28; }
+  100% { transform: translateY(-220px) scale(var(--s)) rotate(var(--r)); opacity: 0; }
+}
+
+.heart {
+  position: absolute;
+  left: var(--x);
+  bottom: -20px;
+  font-size: var(--fs);
+  filter: blur(0.2px);
+  animation: floatHeart var(--d) ease-in forwards;
+  user-select: none;
+  opacity: 0;
+}
+
+/* Optional: a cute “wiggle” entrance for the login card */
+@keyframes cardPop {
+  0% { opacity: 0; transform: translateY(14px) scale(0.98); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+#screen-login{
+  animation: cardPop 520ms ease-out both;
+}
+
+.valRow{
+  position: relative;
+  min-height: 54px;
+}
+
+.noBtn{
+  position: relative; /* becomes absolute when it starts running */
+  transition: transform .12s ease;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.noBtn:hover{ transform: scale(1.02); }

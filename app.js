@@ -5,6 +5,57 @@ const alwaysBtn = document.getElementById("alwaysBtn");
 const afterYes = document.getElementById("afterYes");
 const confettiCanvas = document.getElementById("confetti");
 
+const noBtn = document.getElementById("noBtn");
+const valRow = document.getElementById("valRow");
+const finalText = document.getElementById("finalText");
+
+
+const heartsLayer = document.getElementById("heartsLayer");
+let heartsTimer = null;
+
+function spawnHeart() {
+  if (!heartsLayer) return;
+
+  const heart = document.createElement("div");
+  heart.className = "heart";
+
+  // Pick a heart style (mix it up)
+  const chars = ["❤️", "💖", "💘", "💝", "💕", "💗"];
+  heart.textContent = chars[Math.floor(Math.random() * chars.length)];
+
+  // Randomize motion + look
+  const x = Math.floor(Math.random() * 95) + "%";     // 0–95%
+  const fs = (10 + Math.random() * 18).toFixed(0) + "px"; // size
+  const d = (2.2 + Math.random() * 2.6).toFixed(2) + "s"; // duration
+  const s = (0.7 + Math.random() * 1.1).toFixed(2);       // scale
+  const r = ((Math.random() * 80) - 40).toFixed(0) + "deg"; // rotate
+
+  heart.style.setProperty("--x", x);
+  heart.style.setProperty("--fs", fs);
+  heart.style.setProperty("--d", d);
+  heart.style.setProperty("--s", s);
+  heart.style.setProperty("--r", r);
+
+  heartsLayer.appendChild(heart);
+
+  // Cleanup after animation ends
+  heart.addEventListener("animationend", () => heart.remove());
+}
+
+function startHearts() {
+  if (heartsTimer) return;
+  // Spawn a few immediately
+  for (let i = 0; i < 6; i++) spawnHeart();
+  // Then keep spawning
+  heartsTimer = setInterval(spawnHeart, 350);
+}
+
+function stopHearts() {
+  if (!heartsTimer) return;
+  clearInterval(heartsTimer);
+  heartsTimer = null;
+  if (heartsLayer) heartsLayer.innerHTML = "";
+}
 
 function renderGallery() {
   const photos = window.APP_DATA?.photos || [];
@@ -116,6 +167,37 @@ function startConfetti() {
   tick();
 }
 
+function moveNoButton() {
+  if (!noBtn || !valRow) return;
+
+  // Make sure row can contain an absolutely positioned button
+  valRow.style.position = "relative";
+
+  // First time: switch to absolute so we can move it freely
+  noBtn.style.position = "absolute";
+
+  const rowRect = valRow.getBoundingClientRect();
+  const btnRect = noBtn.getBoundingClientRect();
+
+  const pad = 6;
+  const maxX = Math.max(pad, rowRect.width - btnRect.width - pad);
+  const maxY = Math.max(pad, rowRect.height - btnRect.height - pad);
+
+  const x = pad + Math.random() * maxX;
+  const y = pad + Math.random() * maxY;
+
+  noBtn.style.left = `${x}px`;
+  noBtn.style.top = `${y}px`;
+}
+
+// "No" runs away on hover/touch
+noBtn.addEventListener("mouseenter", moveNoButton);
+noBtn.addEventListener("mousedown", (e) => { e.preventDefault(); moveNoButton(); });
+
+// Mobile: run away when finger approaches
+noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNoButton(); }, { passive: false });
+
+
 const screens = ["login", "home", "memories", "playlist", "final"];
 
 const el = {
@@ -126,13 +208,19 @@ const el = {
   hint: document.getElementById("loginHint"),
 };
 
-const PASSCODE = "iloveyou"; // CHANGE THIS
+const PASSCODE = "maanilovesyoumerijaan"; // CHANGE THIS
 
 function show(name){
   for (const s of screens) {
     document.getElementById(`screen-${s}`).hidden = (s !== name);
   }
-  el.nav.hidden = !isUnlocked();
+
+  // Always hide nav on login screen
+  el.nav.hidden = (name === "login") || !isUnlocked();
+
+  // Hearts only on login screen
+  if (name === "login") startHearts();
+  else stopHearts();
 }
 
 function isUnlocked(){
@@ -150,6 +238,11 @@ function unlock(){
     show("home");
   } else {
     el.hint.textContent = "Hmm… try again ❤️";
+
+    const loginCard = document.getElementById("screen-login");
+    loginCard.classList.remove("shake");
+    void loginCard.offsetWidth; // restart animation
+    loginCard.classList.add("shake");
   }
 }
 
@@ -185,7 +278,79 @@ renderSongs();
 function onYes() {
   afterYes.hidden = false;
   startConfetti();
+  if (noBtn) noBtn.hidden = true;
 }
+
+let noCount = 0;
+
+const noLines = [
+  "Nice try 😄",
+  "No button is shy today 🙈",
+  "Absolutely not happening 😂",
+  "You can’t click that one 😌",
+  "Plot twist: ‘No’ is disabled by love 💘",
+  "Okay okay… but why though? 🥺",
+  "Error 404: No not found 😇",
+  "I’m faster than your finger 😈",
+  "Stoppp 😂 just press Yes",
+  "This is a rigged election 😤",
+];
+
+function moveNoButton() {
+  if (!noBtn || !valRow) return;
+
+  noCount += 1;
+
+  // Update funny message
+  if (finalText) {
+    const line = noLines[Math.min(noCount - 1, noLines.length - 1)];
+    finalText.textContent = line;
+  }
+
+  const rowRect = valRow.getBoundingClientRect();
+  const btnRect = noBtn.getBoundingClientRect();
+
+  // Keep it within the row bounds
+  const pad = 8;
+  const maxX = Math.max(pad, rowRect.width - btnRect.width - pad);
+  const maxY = Math.max(pad, rowRect.height - btnRect.height - pad);
+
+  const x = pad + Math.random() * maxX;
+  const y = pad + Math.random() * maxY;
+
+  noBtn.style.left = `${x}px`;
+  noBtn.style.top = `${y}px`;
+
+  // Make it feel extra cheeky
+  noBtn.style.transform = `rotate(${(-8 + Math.random() * 16).toFixed(0)}deg)`;
+}
+
+if (noBtn) {
+  // Desktop: run away as you approach
+  noBtn.addEventListener("mouseenter", moveNoButton);
+
+  // Desktop: if they try to click anyway
+  noBtn.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    moveNoButton();
+  });
+
+  // Mobile: run away on touch attempt
+  noBtn.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    moveNoButton();
+  }, { passive: false });
+}
+
+
+ function onYes() {
+  afterYes.hidden = false;
+  startConfetti();
+
+  if (finalText) finalText.textContent = "YAYYY!! 🥹💞 Best answer ever.";
+  if (noBtn) noBtn.hidden = true;
+}
+
 
 yesBtn.addEventListener("click", onYes);
 alwaysBtn.addEventListener("click", onYes);

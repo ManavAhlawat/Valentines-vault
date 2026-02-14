@@ -21,6 +21,7 @@
   <main class="container">
     <!-- LOGIN -->
     <section class="card" id="screen-login">
+      <div id="heartsLayer" class="heartsLayer" aria-hidden="true"></div>
       <h1>Hi love ✨</h1>
       <p class="muted">Enter our secret code to unlock this little place.</p>
 
@@ -56,7 +57,7 @@
     <!-- PLACEHOLDERS (we’ll implement next) -->
     <section class="card" id="screen-memories" hidden>
   <h1>Memories</h1>
-  <p class="muted">Tap a photo ❤️</p>
+  <p class="muted">Happy Valentine's Day ❤️</p>
 
   <div id="gallery" class="gallery"></div>
 </section>
@@ -70,20 +71,17 @@
 </section>
 
 
-    <section class="card" id="screen-final" hidden>
-  <h1>Happy Valentine’s Day ❤️</h1>
-  <p class="muted" id="finalText">
-    I’m really grateful for you. Thanks for being my favorite person.
-  </p>
+<section class="card" id="screen-final" hidden>
+  <h1>Will you be my Valentine? 💖</h1>
+  <p class="muted" id="finalText">No pressure… but also yes pressure 😄</p>
 
-  <div class="row">
+  <div class="row valRow" id="valRow">
     <button class="primary" id="yesBtn">Yes ❤️</button>
-    <button class="primary soft" id="alwaysBtn">Always ❤️</button>
+    <button class="primary soft noBtn" id="noBtn">No 🙈</button>
   </div>
 
   <div id="afterYes" class="after" hidden>
-    <div class="big">You just made my day 🥹</div>
-    <div class="muted">Now let’s celebrate soon.</div>
+    <div class="muted">Okay now you’re officially stuck with me 😄</div>
   </div>
 
   <canvas id="confetti" class="confetti" hidden></canvas>
