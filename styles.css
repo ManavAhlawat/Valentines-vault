@@ -196,3 +196,110 @@ input{
 }
 
 .noBtn:hover{ transform: scale(1.02); }
+
+/* Hidden Spotify player (kept tiny + subtle) */
+.bgSongWrap{
+  margin-top: 14px;
+  opacity: .85;
+}
+
+/* Couple animation scene */
+.coupleScene{
+  position: relative;
+  margin-top: 18px;
+  height: 140px;
+  border-radius: 16px;
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,0.06);
+  overflow: hidden;
+}
+
+.person{
+  position: absolute;
+  top: 40px;
+  font-size: 42px;
+  filter: drop-shadow(0 12px 25px rgba(0,0,0,.35));
+}
+
+.person.left{ left: 18px; }
+.person.right{ right: 18px; }
+
+.sceneText{
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: 900;
+  color: var(--text);
+  opacity: .9;
+}
+
+/* When YES happens, bring them together */
+.coupleScene.play .person.left{
+  animation: moveInLeft 900ms cubic-bezier(.2,.9,.2,1) forwards;
+}
+.coupleScene.play .person.right{
+  animation: moveInRight 900ms cubic-bezier(.2,.9,.2,1) forwards;
+}
+
+@keyframes moveInLeft{
+  to { left: 44%; transform: translateX(-50%) scale(1.06); }
+}
+@keyframes moveInRight{
+  to { right: 44%; transform: translateX(50%) scale(1.06); }
+}
+
+/* Heart burst animation */
+.heartBurst{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+
+.heartBurst span{
+  position:absolute;
+  left:50%;
+  top:58px;
+  transform: translate(-50%,-50%);
+  font-size: 16px;
+  opacity:0;
+  animation: popHeart 900ms ease-out forwards;
+}
+
+@keyframes popHeart{
+  0%   { opacity:0; transform: translate(-50%,-50%) scale(.6); }
+  25%  { opacity:.9; }
+  100% { opacity:0; transform: translate(var(--x), var(--y)) scale(1.2); }
+}
+
+/* Container that holds both gifs side-by-side */
+.gifRow{
+  margin-top: 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap; /* mobile friendly: will stack if too narrow */
+}
+
+/* Individual gif card */
+.coupleGif{
+  width: min(320px, 48%);
+  max-width: 320px;
+  border-radius: 16px;
+  border: 1px solid var(--stroke);
+  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+  opacity: 0;
+  transform: translateY(10px) scale(.98);
+  transition: opacity 600ms ease, transform 600ms ease;
+  display: block;
+}
+
+.coupleGif.show{
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+@media (max-width: 520px){
+  .coupleGif{ width: 100%; max-width: 420px; }
+}

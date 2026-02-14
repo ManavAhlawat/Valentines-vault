@@ -54,42 +54,58 @@
       </div>
     </section>
 
-    <!-- PLACEHOLDERS (we’ll implement next) -->
+    <!-- MEMORIES -->
     <section class="card" id="screen-memories" hidden>
-  <h1>Memories</h1>
-  <p class="muted">Happy Valentine's Day ❤️</p>
+      <h1>Memories</h1>
+      <p class="muted">Happy Valentine's Day ❤️</p>
+      <div id="gallery" class="gallery"></div>
+    </section>
 
-  <div id="gallery" class="gallery"></div>
-</section>
-
-
+    <!-- PLAYLIST -->
     <section class="card" id="screen-playlist" hidden>
-  <h1>Playlist</h1>
-  <p class="muted">Our favorite songs 🎵</p>
+      <h1>Playlist</h1>
+      <p class="muted">Our favorite songs 🎵</p>
+      <div id="songs" class="songs"></div>
+    </section>
 
-  <div id="songs" class="songs"></div>
-</section>
+    <!-- FINAL / SURPRISE -->
+    <section class="card" id="screen-final" hidden>
+      <h1>Will you be my Valentine? 💖</h1>
+      <p class="muted" id="finalText">No pressure… but also yes pressure 😄</p>
 
+      <div class="row valRow" id="valRow">
+        <button class="primary" id="yesBtn">Yes ❤️</button>
+        <button class="primary soft noBtn" id="noBtn">No 🙈</button>
+      </div>
 
-<section class="card" id="screen-final" hidden>
-  <h1>Will you be my Valentine? 💖</h1>
-  <p class="muted" id="finalText">No pressure… but also yes pressure 😄</p>
+      <div id="afterYes" class="after" hidden>
+        <div class="muted">Okay now you’re officially stuck with me 😄</div>
+      </div>
 
-  <div class="row valRow" id="valRow">
-    <button class="primary" id="yesBtn">Yes ❤️</button>
-    <button class="primary soft noBtn" id="noBtn">No 🙈</button>
-  </div>
+      <!-- Background song (hidden until YES) -->
+      <div id="bgSongWrap" class="bgSongWrap" hidden>
+        <iframe
+          id="bgSpotify"
+          style="border-radius:12px"
+          src="https://open.spotify.com/embed/track/0T5iIrXA4p5GsubkhuBIKV?utm_source=generator"
+          width="100%"
+          height="80"
+          frameborder="0"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy">
+        </iframe>
+      </div>
 
-  <div id="afterYes" class="after" hidden>
-    <div class="muted">Okay now you’re officially stuck with me 😄</div>
-  </div>
+      <div id="gifRow" class="gifRow" hidden>
+        <img id="gif1" class="coupleGif" src="assets/anim/couple1.gif" alt="Couple animation">
+        <img id="gif2" class="coupleGif" src="assets/anim/peak.gif" alt="Valentine animation">
+      </div>
 
-  <canvas id="confetti" class="confetti" hidden></canvas>
-</section>
+      <canvas id="confetti" class="confetti" hidden></canvas>
+    </section>
+  </main>
 
-</main>
-
-<script src="data.js"></script>
-<script src="app.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
