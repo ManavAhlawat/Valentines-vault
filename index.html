@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Our Vault ❤️</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Our Vault ❤️</div>
+    <nav id="nav" class="nav" hidden>
+      <button class="navbtn" data-go="home">Home</button>
+      <button class="navbtn" data-go="memories">Memories</button>
+      <button class="navbtn" data-go="playlist">Playlist</button>
+      <button class="navbtn" data-go="final">Surprise</button>
+      <button class="navbtn ghost" id="lockBtn">Lock</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- LOGIN -->
+    <section class="card" id="screen-login">
+      <h1>Hi love ✨</h1>
+      <p class="muted">Enter our secret code to unlock this little place.</p>
+
+      <div class="row">
+        <input id="passcode" type="password" placeholder="Secret code" autocomplete="off" />
+        <button id="unlockBtn" class="primary">Unlock</button>
+      </div>
+
+      <p class="muted tiny" id="loginHint"></p>
+    </section>
+
+    <!-- HOME -->
+    <section class="card" id="screen-home" hidden>
+      <h1>Welcome ❤️</h1>
+      <p class="muted">I made this for you.</p>
+
+      <div class="grid2">
+        <button class="tile" data-go="memories">
+          <div class="tileTitle">Memories</div>
+          <div class="tileSub">Our pictures</div>
+        </button>
+        <button class="tile" data-go="playlist">
+          <div class="tileTitle">Playlist</div>
+          <div class="tileSub">Our favorite songs</div>
+        </button>
+        <button class="tile" data-go="final">
+          <div class="tileTitle">Surprise</div>
+          <div class="tileSub">One last thing…</div>
+        </button>
+      </div>
+    </section>
+
+    <!-- PLACEHOLDERS (we’ll implement next) -->
+    <section class="card" id="screen-memories" hidden>
+  <h1>Memories</h1>
+  <p class="muted">Tap a photo ❤️</p>
+
+  <div id="gallery" class="gallery"></div>
+</section>
+
+
+    <section class="card" id="screen-playlist" hidden>
+  <h1>Playlist</h1>
+  <p class="muted">Our favorite songs 🎵</p>
+
+  <div id="songs" class="songs"></div>
+</section>
+
+
+    <section class="card" id="screen-final" hidden>
+  <h1>Happy Valentine’s Day ❤️</h1>
+  <p class="muted" id="finalText">
+    I’m really grateful for you. Thanks for being my favorite person.
+  </p>
+
+  <div class="row">
+    <button class="primary" id="yesBtn">Yes ❤️</button>
+    <button class="primary soft" id="alwaysBtn">Always ❤️</button>
+  </div>
+
+  <div id="afterYes" class="after" hidden>
+    <div class="big">You just made my day 🥹</div>
+    <div class="muted">Now let’s celebrate soon.</div>
+  </div>
+
+  <canvas id="confetti" class="confetti" hidden></canvas>
+</section>
+
+</main>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
