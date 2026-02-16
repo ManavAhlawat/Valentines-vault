@@ -5,7 +5,6 @@ window.APP_DATA = {
     "2.jpg",
     "3.jpg",
     "4.PNG",
-    "5.PNG",
     "6.PNG",
     "7.png",
     "8.png",
