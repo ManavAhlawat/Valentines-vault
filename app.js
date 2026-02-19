@@ -1,5 +1,21 @@
 /* ---------------- DOM refs ---------------- */
-const screens = ["login", "home", "memories", "playlist", "final"];
+const screens = ["login", "home", "memories", "playlist", "reunion", "final"];
+
+// Reunion refs
+const timeET = document.getElementById("timeET");
+const timeIST = document.getElementById("timeIST");
+const cdDays = document.getElementById("cdDays");
+const cdHours = document.getElementById("cdHours");
+const cdMins = document.getElementById("cdMins");
+const cdSecs = document.getElementById("cdSecs");
+const progressFill = document.getElementById("progressFill");
+const progressPct = document.getElementById("progressPct");
+const asciiBar = document.getElementById("asciiBar");
+const dailyMsg = document.getElementById("dailyMsg");
+const daysPulse = document.getElementById("daysPulse");
+
+let reunionTimer = null;
+let lastWholeDays = null;
 
 const el = {
   nav: document.getElementById("nav"),
@@ -67,6 +83,8 @@ function lock() {
 function show(name) {
   for (const s of screens) {
     const node = document.getElementById(`screen-${s}`);
+    if (name === "reunion") startReunionTimer();
+      else stopReunionTimer();
     if (node) node.hidden = (s !== name);
   }
 
@@ -376,3 +394,196 @@ if (noBtn) {
 renderGallery();
 renderSongs();
 show(isUnlocked() ? "home" : "login");
+
+function pad2(n){ return String(n).padStart(2, "0"); }
+
+// Get a Date for a specific wall-clock time in a specific IANA timezone (ET safe incl DST)
+function zonedTimeToUtcDate({ year, month, day, hour=0, minute=0, second=0, timeZone }) {
+  // Start with an approximate UTC time
+  const approx = new Date(Date.UTC(year, month-1, day, hour, minute, second));
+
+  // Figure out what time that "approx" corresponds to in the target timezone
+  const dtf = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    hour12: false,
+    year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", second: "2-digit"
+  });
+  const parts = Object.fromEntries(dtf.formatToParts(approx).map(p => [p.type, p.value]));
+
+  // Convert that displayed zoned time back to a UTC timestamp
+  const asUtc = Date.UTC(
+    Number(parts.year),
+    Number(parts.month) - 1,
+    Number(parts.day),
+    Number(parts.hour),
+    Number(parts.minute),
+    Number(parts.second)
+  );
+
+  // Offset between approx and actual UTC we want
+  const diffMs = asUtc - approx.getTime();
+  return new Date(approx.getTime() - diffMs);
+}
+
+function setFlipText(el, text){
+  if (!el) return;
+  const next = String(text);
+  if (el.textContent === next) return;
+  el.textContent = next;
+  el.classList.remove("flipAnim");
+  void el.offsetWidth;
+  el.classList.add("flipAnim");
+}
+
+function buildAsciiBar(pct){
+  const total = 18;
+  const filled = Math.round((pct/100) * total);
+  return "[" + "█".repeat(filled) + "░".repeat(total - filled) + "]";
+}
+
+function pickDailyMessage(daysLeft){
+
+  const messages = {
+    0: "She’s here. Go get that hug 🥹💞",
+    1: "Tomorrow. I’m basically vibrating 😭✈️",
+    2: "48 hours. My heart is already at the airport ❤️",
+    3: "3 days. Warning: excessive cuddling expected on arrival.",
+    4: "4 days. My arms are pre-reserved for you.",
+    5: "5 days. Counting down kisses in advance 😌",
+    6: "6 days. Your side of the bed is waiting 🛏️❤️",
+    7: "One week. We survived long distance like champions 💪💖",
+    8: "8 days. I miss your random laughs 😭",
+    9: "9 days. My hoodie misses you too 🥹",
+    10: "10 days. I’m storing hugs with interest 💞",
+    11: "11 days. Soon this countdown becomes a memory.",
+    12: "12 days. Time moves slower without your smile 😌",
+    13: "13 days. Every sunrise is one closer to you.",
+    14: "14 days. Two weeks. Every day closer to you 💖",
+    15: "15 days. I miss your laugh 🥹😂",
+    16: "16 days. Missing your eyes today 👀💖",
+    17: "17 days. I miss your laugh the most 🥹",
+    18: "18 days. Feels close. Feels real. ❤️"
+  };
+
+  if (messages[daysLeft]) {
+    return messages[daysLeft];
+  }
+
+  if (daysLeft < 0) {
+    return "You’re together. Stop reading this and hug her 😌💞";
+  }
+
+  // fallback for larger numbers
+  return `${daysLeft} days left. Every day closer to you 💖`;
+}
+
+function startReunionTimer(){
+  stopReunionTimer();
+
+  // Target window: Feb 6, 2026 6:00 PM ET → Mar 8, 2026 9:00 AM ET
+  const start = zonedTimeToUtcDate({
+    year: 2026, month: 2, day: 6, hour: 18, minute: 0, second: 0,
+    timeZone: "America/New_York",
+  });
+
+  const target = zonedTimeToUtcDate({
+    year: 2026, month: 3, day: 8, hour: 9, minute: 0, second: 0,
+    timeZone: "America/New_York",
+  });
+
+  // Cache these once (avoid repeated DOM lookups)
+  const progressFill = document.getElementById("progressFill");
+  const progressPct  = document.getElementById("progressPct");
+  const asciiBar     = document.getElementById("asciiBar");
+
+  let rafId = null;
+
+  // Updates clocks, countdown numbers, daily message (1x/sec)
+  function tick(){
+    const now = new Date();
+
+    // Live clocks
+    if (timeET) {
+      timeET.textContent = new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/New_York",
+        hour: "2-digit", minute: "2-digit", second: "2-digit",
+        weekday: "short", month: "short", day: "2-digit"
+      }).format(now);
+    }
+    if (timeIST) {
+      timeIST.textContent = new Intl.DateTimeFormat("en-IN", {
+        timeZone: "Asia/Kolkata",
+        hour: "2-digit", minute: "2-digit", second: "2-digit",
+        weekday: "short", month: "short", day: "2-digit"
+      }).format(now);
+    }
+
+    // Countdown
+    let ms = target.getTime() - now.getTime();
+    if (ms < 0) ms = 0;
+
+    const totalSec = Math.floor(ms / 1000);
+    const days  = Math.floor(totalSec / 86400);
+    const hours = Math.floor((totalSec % 86400) / 3600);
+    const mins  = Math.floor((totalSec % 3600) / 60);
+    const secs  = totalSec % 60;
+
+    setFlipText(cdDays, days);
+    setFlipText(cdHours, pad2(hours));
+    setFlipText(cdMins, pad2(mins));
+    setFlipText(cdSecs, pad2(secs));
+
+    // Pulse when whole-day changes
+    if (lastWholeDays === null) lastWholeDays = days;
+    if (days !== lastWholeDays) {
+      lastWholeDays = days;
+      if (daysPulse) {
+        daysPulse.classList.remove("dayPulse");
+        void daysPulse.offsetWidth;
+        daysPulse.classList.add("dayPulse");
+      }
+    }
+
+    // Daily message
+    if (dailyMsg) dailyMsg.textContent = pickDailyMessage(days);
+  }
+
+  // Smooth progress (runs every animation frame)
+  function animateProgress(){
+    const now = new Date();
+
+    const total = target.getTime() - start.getTime();
+    const done  = Math.max(0, Math.min(total, now.getTime() - start.getTime()));
+    const pct   = total > 0 ? (done / total) * 100 : 100;
+
+    if (progressFill) progressFill.style.width = `${pct.toFixed(2)}%`;
+    if (progressPct)  progressPct.textContent  = `${pct.toFixed(1)}%`;
+    if (asciiBar)     asciiBar.textContent     = buildAsciiBar(pct);
+
+    // Stop animating once complete (optional)
+    if (done >= total) return;
+
+    rafId = requestAnimationFrame(animateProgress);
+  }
+
+  // Start both loops
+  tick();
+  reunionTimer = setInterval(tick, 1000);
+  rafId = requestAnimationFrame(animateProgress);
+
+  // Ensure stopReunionTimer can stop the RAF too
+  startReunionTimer._rafId = () => rafId;
+}
+
+function stopReunionTimer(){
+  if (reunionTimer) {
+    clearInterval(reunionTimer);
+    reunionTimer = null;
+  }
+  const rafGetter = startReunionTimer._rafId;
+  if (rafGetter) {
+    const id = rafGetter();
+    if (id) cancelAnimationFrame(id);
+  }
+}

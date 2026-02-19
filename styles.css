@@ -303,3 +303,140 @@ input{
 @media (max-width: 520px){
   .coupleGif{ width: 100%; max-width: 420px; }
 }
+
+/* Reunion layout */
+.reunionTop{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap:12px;
+  margin-top:14px;
+}
+@media (max-width: 760px){
+  .reunionTop{ grid-template-columns: 1fr; }
+}
+
+.tzCard{
+  border:1px solid var(--stroke);
+  background: rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 12px 14px;
+}
+.tzLabel{ font-weight: 800; font-size: 13px; color: var(--muted); }
+.tzTime{
+  font-weight: 900;
+  font-size: 22px;
+  margin-top: 6px;
+  letter-spacing: .5px;
+}
+
+.countWrap{
+  margin-top: 14px;
+  border:1px solid var(--stroke);
+  background: rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 14px;
+}
+.countTitle{ font-weight: 900; margin-bottom: 10px; }
+
+.flipRow{
+  display:flex;
+  gap:10px;
+  flex-wrap: wrap;
+}
+.flipBox{
+  min-width: 92px;
+  flex: 1 1 92px;
+  border:1px solid var(--stroke);
+  background: rgba(0,0,0,.18);
+  border-radius: 14px;
+  padding: 10px 12px;
+  text-align:center;
+}
+.flipNum{
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  font-variant-numeric: tabular-nums;
+}
+.flipLbl{
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* Soft ticking feel */
+.ticking{
+  margin-top: 10px;
+  animation: tickPulse 1s ease-in-out infinite;
+}
+@keyframes tickPulse{
+  0%,100%{ opacity: .55; }
+  50%{ opacity: .85; }
+}
+
+/* Flip animation when numbers change */
+.flipAnim{
+  animation: flip 260ms ease;
+}
+@keyframes flip{
+  0%{ transform: translateY(0) rotateX(0deg); }
+  50%{ transform: translateY(-2px) rotateX(35deg); }
+  100%{ transform: translateY(0) rotateX(0deg); }
+}
+
+/* Progress */
+.progressWrap{
+  margin-top: 14px;
+  border:1px solid var(--stroke);
+  background: rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 14px;
+}
+.progressTitle{ font-weight: 900; margin-bottom: 10px; }
+.progressBar{
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(0,0,0,.20);
+  border: 1px solid var(--stroke);
+  overflow:hidden;
+}
+.progressFill{
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: rgba(255,95,162,.95);
+  transition: width 700ms ease;
+}
+.progressMeta{
+  display:flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  gap: 10px;
+}
+.asciiBar{
+  margin-top: 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 13px;
+  color: rgba(246,247,251,0.8);
+}
+
+/* Daily note */
+.dailyNote{
+  margin-top: 14px;
+  border:1px solid var(--stroke);
+  background: rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 14px;
+}
+.dailyTitle{ font-weight: 900; margin-bottom: 6px; }
+.dailyMsg{ font-size: 16px; font-weight: 700; }
+
+/* Pulse glow when the DAY changes */
+.dayPulse{
+  animation: dayGlow 1.4s ease-in-out;
+}
+@keyframes dayGlow{
+  0%{ box-shadow: 0 0 0 rgba(255,95,162,0); }
+  30%{ box-shadow: 0 0 38px rgba(255,95,162,.22); }
+  100%{ box-shadow: 0 0 0 rgba(255,95,162,0); }
+}

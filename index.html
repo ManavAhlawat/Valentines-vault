@@ -13,6 +13,7 @@
       <button class="navbtn" data-go="home">Home</button>
       <button class="navbtn" data-go="memories">Memories</button>
       <button class="navbtn" data-go="playlist">Playlist</button>
+      <button class="navbtn" data-go="reunion">Reunion</button>
       <button class="navbtn" data-go="final">Surprise</button>
       <button class="navbtn ghost" id="lockBtn">Lock</button>
     </nav>
@@ -51,6 +52,10 @@
           <div class="tileTitle">Surprise</div>
           <div class="tileSub">One last thing…</div>
         </button>
+        <button class="tile" data-go="reunion">
+          <div class="tileTitle">Reunion ✈️</div>
+          <div class="tileSub">March 8 • 9:00 AM ET</div>
+        </button>
       </div>
     </section>
 
@@ -66,6 +71,52 @@
       <h1>Playlist</h1>
       <p class="muted">Our favorite songs 🎵</p>
       <div id="songs" class="songs"></div>
+    </section>
+
+    <!-- REUNION -->
+    <section class="card" id="screen-reunion" hidden>
+      <h1>Countdown ✈️💞</h1>
+      <p class="muted">Every day closer to you. March 8 • 9:00 AM (ET)</p>
+
+      <div class="reunionTop">
+        <div class="tzCard">
+          <div class="tzLabel">Philadelphia (ET)</div>
+          <div id="timeET" class="tzTime">--:--</div>
+        </div>
+        <div class="tzCard">
+          <div class="tzLabel">Jabalpur (IST)</div>
+          <div id="timeIST" class="tzTime">--:--</div>
+        </div>
+      </div>
+
+      <div id="daysPulse" class="countWrap">
+        <div class="countTitle">Time until landing</div>
+        <div class="flipRow" aria-label="countdown">
+          <div class="flipBox"><div class="flipNum" id="cdDays">--</div><div class="flipLbl">days</div></div>
+          <div class="flipBox"><div class="flipNum" id="cdHours">--</div><div class="flipLbl">hrs</div></div>
+          <div class="flipBox"><div class="flipNum" id="cdMins">--</div><div class="flipLbl">min</div></div>
+          <div class="flipBox"><div class="flipNum" id="cdSecs">--</div><div class="flipLbl">sec</div></div>
+        </div>
+        <div class="tiny muted ticking">tick… tick… closer 💗</div>
+      </div>
+
+      <div class="progressWrap">
+        <div class="progressTitle">Total trip completed</div>
+        <div class="progressBar" aria-label="progress bar">
+          <div id="progressFill" class="progressFill"></div>
+        </div>
+        <div class="progressMeta">
+          <div id="progressPct" class="muted tiny">--%</div>
+          <div id="pilotLine" class="muted tiny">Almost there ❤️</div>
+        </div>
+
+        <div id="asciiBar" class="asciiBar" aria-hidden="true">[░░░░░░░░░░░░░░░░░░]</div>
+      </div>
+
+      <div class="dailyNote">
+        <div class="dailyTitle">Today’s note</div>
+        <div id="dailyMsg" class="dailyMsg">--</div>
+      </div>
     </section>
 
     <!-- FINAL / SURPRISE -->
