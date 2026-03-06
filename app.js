@@ -447,17 +447,28 @@ function pickDailyMessage(daysLeft){
   const messages = {
     0: "She’s here. Go get that hug 🥹💞",
     1: "Tomorrow. I’m basically vibrating 😭✈️",
-    2: "48 hours. My heart is already at the airport ❤️",
-    3: "3 days. Warning: excessive cuddling expected on arrival.",
-    4: "4 days. My arms are pre-reserved for you.",
-    5: "5 days. Counting down kisses in advance 😌",
-    6: "6 days. Your side of the bed is waiting 🛏️❤️",
-    7: "One week. We survived long distance like champions 💪💖",
-    8: "8 days. Congratulations, my love 🤍" + "\n\r" + "First step of a lifetime of memories we will build together.",
-    9: "9 days. Congratulations, my love 🤍" + "\n\r" + "First step of a lifetime of memories we will build together.",
-    10: "10 days. Happy Roka Day, my love ❤️. Even though I’m miles away, my heart is right next to you. I wish I could be there to see you, to hold your hand and laugh with you. I am with you in every prayer, every smile, every blessing exchanged today. Today, our forever becomes official. So proud of us. So grateful for you. So ready for forever.",
-    11: "11 days. Soon this countdown becomes a memory.",
-    12: "12 days. Time moves slower without your smile 😌",
+    2: "2 days before I finally get to see you. Warning: excessive cuddling expected on arrival.",
+    3: "3 days. The wait is almost over.",
+    4: "4 days. Almost time to stop counting days.",
+    5: "5 days. Soon we’ll be back to building our life together day by day.",
+    6: "6 days. I miss you, but I know the wait will make that first hug even better.",
+    7: "7 days. I’m ready for long conversations, random laughs, and normal days with you.",
+    8: "8 days. I miss you and I’m proud of how strong we are through all this.",
+    9: "9 days. I can’t wait to start working on our goals together.",
+    10: "10 days. One day at a time and soon we’ll be laughing about this.",
+    11: "11 days. I miss you a lot, but I know this wait is just a small chapter in a long story.",
+    12: "12 days. The countdown got longer, but so what. We’re learning to handle hard things together.",
+    // 2: "48 hours. My heart is already at the airport ❤️",
+    // 3: "3 days. Warning: excessive cuddling expected on arrival.",
+    // 4: "4 days. My arms are pre-reserved for you.",
+    // 5: "5 days. Counting down kisses in advance 😌",
+    // 6: "6 days. Your side of the bed is waiting 🛏️❤️",
+    // 7: "One week. We survived long distance like champions 💪💖",
+    // 8: "8 days. Congratulations, my love 🤍" + "\n\r" + "First step of a lifetime of memories we will build together.",
+    // 9: "9 days. Congratulations, my love 🤍" + "\n\r" + "First step of a lifetime of memories we will build together.",
+    // 10: "10 days. Happy Roka Day, my love ❤️. Even though I’m miles away, my heart is right next to you. I wish I could be there to see you, to hold your hand and laugh with you. I am with you in every prayer, every smile, every blessing exchanged today. Today, our forever becomes official. So proud of us. So grateful for you. So ready for forever.",
+    // 11: "11 days. Soon this countdown becomes a memory.",
+    // 12: "12 days. The countdown got longer, but so what. We’re learning to handle hard things together.",
     13: "13 days. Every sunrise is one closer to you.",
     14: "14 days. Two weeks. Every day closer to you 💖",
     15: "15 days. I miss your laugh 🥹😂",
@@ -485,12 +496,12 @@ function startReunionTimer(){
   const start = zonedTimeToUtcDate({
     year: 2026, month: 2, day: 6, hour: 18, minute: 0, second: 0,
     timeZone: "America/New_York",
-  });
+});
 
-  const target = zonedTimeToUtcDate({
-    year: 2026, month: 3, day: 8, hour: 9, minute: 0, second: 0,
-    timeZone: "America/New_York",
-  });
+const target = zonedTimeToUtcDate({
+  year: 2026, month: 3, day: 18, hour: 8, minute: 27, second: 0,
+  timeZone: "America/New_York",
+});
 
   // Cache these once (avoid repeated DOM lookups)
   const progressFill = document.getElementById("progressFill");
